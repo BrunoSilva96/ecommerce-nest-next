@@ -5,8 +5,12 @@ export abstract class ProductRepository {
 
   abstract create(data: {
     name: string;
+    slug?: string;
+    priceCents: number;
     description: string;
-    price: number;
+    stock?: number;
+    category?: string;
+    images?: string[];
     createdAt: Date;
   }): Promise<ProductEntity>;
 }

@@ -9,16 +9,24 @@ import { ConflictException, Injectable } from '@nestjs/common';
 export class DrizzleProductRepository implements ProductRepository {
   async create(data: {
     name: string;
+    slug?: string;
+    priceCents: number;
     description: string;
-    price: number;
+    stock?: number;
+    category?: string;
+    images?: string[];
   }): Promise<ProductEntity> {
     try {
       const [row] = await db
         .insert(products)
         .values({
           name: data.name,
+          slug: data.slug,
+          priceCents: data.priceCents,
           description: data.description,
-          price: data.price,
+          stock: data.stock,
+          category: data.category,
+          images: data.images,
         })
         .returning();
 
