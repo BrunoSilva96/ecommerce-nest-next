@@ -11,6 +11,6 @@ export abstract class ProductRepository {
     stock?: number;
     category?: string;
     images?: string[];
-    createdAt: Date;
+    createdAt?: Date;
   }): Promise<ProductEntity>;
 }
