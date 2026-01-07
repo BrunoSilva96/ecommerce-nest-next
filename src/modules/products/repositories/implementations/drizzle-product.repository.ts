@@ -3,7 +3,12 @@ import { ProductRepository } from '../product.repository';
 import { db } from 'src/database/drizzle';
 import { eq } from 'drizzle-orm';
 import { products } from 'src/database/schemas/products';
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { UpdateProductDto } from '../../dto/update-product.dto';
 
 @Injectable()
 export class DrizzleProductRepository implements ProductRepository {
@@ -48,5 +53,21 @@ export class DrizzleProductRepository implements ProductRepository {
 
     const row = rows[0];
     return row ? new ProductEntity(row) : null;
+  }
+  async update(
+    id: string,
+    data: Partial<UpdateProductDto>,
+  ): Promise<ProductEntity> {
+    const [update] = await db
+      .update(products)
+      .set({ ...data, updatedAt: new Date() })
+      .where(eq(products.id, id))
+      .returning();
+
+    if (!update) {
+      throw new NotFoundException('Produto não encontrado');
+    }
+
+    return new ProductEntity(update);
   }
 }

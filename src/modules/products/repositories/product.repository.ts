@@ -13,4 +13,18 @@ export abstract class ProductRepository {
     images?: string[];
     createdAt?: Date;
   }): Promise<ProductEntity>;
+
+  abstract update(
+    id: string,
+    data: {
+      name?: string;
+      slug?: string;
+      priceCents?: number;
+      description?: string;
+      stock?: number;
+      category?: string;
+      images?: string[];
+      updatedAt?: Date;
+    },
+  ): Promise<ProductEntity>;
 }
