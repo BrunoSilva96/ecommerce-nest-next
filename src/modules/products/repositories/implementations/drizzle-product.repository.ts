@@ -17,6 +17,7 @@ export class DrizzleProductRepository implements ProductRepository {
     slug?: string;
     priceCents: number;
     description: string;
+    status: boolean;
     stock?: number;
     category?: string;
     images?: string[];
@@ -29,6 +30,7 @@ export class DrizzleProductRepository implements ProductRepository {
           slug: data.slug,
           priceCents: data.priceCents,
           description: data.description,
+          status: data.status,
           stock: data.stock,
           category: data.category,
           images: data.images,

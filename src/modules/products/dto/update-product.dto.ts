@@ -1,4 +1,10 @@
-import { IsArray, IsInt, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsInt,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class UpdateProductDto {
   @IsOptional()
@@ -16,6 +22,10 @@ export class UpdateProductDto {
   @IsOptional()
   @IsInt()
   priceCents?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  status?: boolean;
 
   @IsOptional()
   @IsString()

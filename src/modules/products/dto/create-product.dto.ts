@@ -1,5 +1,6 @@
 import {
   IsArray,
+  IsBoolean,
   IsInt,
   IsNotEmpty,
   IsNumber,
@@ -39,6 +40,9 @@ export class CreateProductDto {
   @IsInt()
   @Min(0)
   stock?: number;
+
+  @IsBoolean()
+  status: boolean;
 
   @IsOptional()
   @IsString()

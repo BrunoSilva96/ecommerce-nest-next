@@ -10,6 +10,7 @@ export abstract class ProductRepository {
     description: string;
     stock?: number;
     category?: string;
+    status: boolean;
     images?: string[];
     createdAt?: Date;
   }): Promise<ProductEntity>;
@@ -23,6 +24,7 @@ export abstract class ProductRepository {
       description?: string;
       stock?: number;
       category?: string;
+      status?: boolean;
       images?: string[];
       updatedAt?: Date;
     },
