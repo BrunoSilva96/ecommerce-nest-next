@@ -72,4 +72,18 @@ export class DrizzleProductRepository implements ProductRepository {
 
     return new ProductEntity(update);
   }
+
+  async delete(id: string): Promise<void> {
+    const existing = await db
+      .select({ id: products.id })
+      .from(products)
+      .where(eq(products.id, id))
+      .limit(1);
+
+    if (existing.length === 0) {
+      throw new NotFoundException('Produto não encontrado');
+    }
+
+    await db.delete(products).where(eq(products.id, id));
+  }
 }

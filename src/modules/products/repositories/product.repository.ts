@@ -29,4 +29,6 @@ export abstract class ProductRepository {
       updatedAt?: Date;
     },
   ): Promise<ProductEntity>;
+
+  abstract delete(id: string): Promise<void>;
 }

@@ -1,14 +1,16 @@
-import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 import { CreateProductUseCase } from '../use-case/create-product.usecase';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { UpdateProductUseCase } from '../use-case/update-product.usecase';
+import { DeleteProductUseCase } from '../use-case/delete-product.usecase';
 
 @Controller('products')
 export class ProductController {
   constructor(
     private readonly createProductUseCase: CreateProductUseCase,
     private readonly updateProductUseCase: UpdateProductUseCase,
+    private readonly deleteProductUseCase: DeleteProductUseCase,
   ) {}
 
   @Post()
@@ -45,5 +47,11 @@ export class ProductController {
       images: product.images,
       updatedAt: product.updatedAt,
     };
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    await this.deleteProductUseCase.execute(id);
+    return { message: 'Produto deletado com sucesso' };
   }
 }
