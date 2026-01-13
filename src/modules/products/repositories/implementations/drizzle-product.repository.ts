@@ -1,7 +1,7 @@
 import { ProductEntity } from '../../entities/product.entity';
 import { ProductRepository } from '../product.repository';
 import { db } from 'src/database/drizzle';
-import { eq } from 'drizzle-orm';
+import { eq, ilike, or } from 'drizzle-orm';
 import { products } from 'src/database/schemas/products';
 import {
   ConflictException,
@@ -85,5 +85,35 @@ export class DrizzleProductRepository implements ProductRepository {
     }
 
     await db.delete(products).where(eq(products.id, id));
+  }
+
+  async search(term: string): Promise<ProductEntity[]> {
+    const rows = await db
+      .select()
+      .from(products)
+      .where(
+        or(
+          ilike(products.name, `%${term}%`),
+          ilike(products.slug, `%${term}%`),
+        ),
+      )
+      .limit(20);
+
+    return rows.map((row) => new ProductEntity(row));
+  }
+
+  async findAll(limit = 20): Promise<ProductEntity[]> {
+    const rows = await db.select().from(products).limit(limit);
+
+    return rows.map((row) => new ProductEntity(row));
+  }
+
+  async findByCategory(category: string): Promise<ProductEntity[]> {
+    const rows = await db
+      .select()
+      .from(products)
+      .where(eq(products.category, category));
+
+    return rows.map((row) => new ProductEntity(row));
   }
 }

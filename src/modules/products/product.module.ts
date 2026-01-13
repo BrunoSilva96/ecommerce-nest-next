@@ -5,6 +5,9 @@ import { DrizzleProductRepository } from './repositories/implementations/drizzle
 import { UpdateProductUseCase } from './use-case/update-product.usecase';
 import { ProductRepository } from './repositories/product.repository';
 import { DeleteProductUseCase } from './use-case/delete-product.usecase';
+import { SearchProductUseCase } from './use-case/search-product.usecase';
+import { FindAllProductsUseCase } from './use-case/find-all-product.usecase';
+import { FindProductByCategoryUseCase } from './use-case/find-products-by-category.usecase';
 
 @Module({
   controllers: [ProductController],
@@ -12,6 +15,9 @@ import { DeleteProductUseCase } from './use-case/delete-product.usecase';
     CreateProductUseCase,
     UpdateProductUseCase,
     DeleteProductUseCase,
+    SearchProductUseCase,
+    FindAllProductsUseCase,
+    FindProductByCategoryUseCase,
     {
       provide: ProductRepository,
       useClass: DrizzleProductRepository,

@@ -31,4 +31,8 @@ export abstract class ProductRepository {
   ): Promise<ProductEntity>;
 
   abstract delete(id: string): Promise<void>;
+
+  abstract search(term: string): Promise<ProductEntity[]>;
+  abstract findAll(limit?: number): Promise<ProductEntity[]>;
+  abstract findByCategory(category: string): Promise<ProductEntity[]>;
 }
