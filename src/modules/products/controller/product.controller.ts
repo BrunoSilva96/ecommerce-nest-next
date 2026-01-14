@@ -16,6 +16,8 @@ import { DeleteProductUseCase } from '../use-case/delete-product.usecase';
 import { SearchProductUseCase } from '../use-case/search-product.usecase';
 import { FindAllProductsUseCase } from '../use-case/find-all-product.usecase';
 import { FindProductByCategoryUseCase } from '../use-case/find-products-by-category.usecase';
+import { ListProductsDto } from '../dto/list-products.dto';
+import { ListProductUseCase } from '../use-case/list-products.usecase.dto';
 
 @Controller('products')
 export class ProductController {
@@ -26,6 +28,7 @@ export class ProductController {
     private readonly searchProductUseCase: SearchProductUseCase,
     private readonly findAllProductsUseCase: FindAllProductsUseCase,
     private readonly findProductByCategoryUseCase: FindProductByCategoryUseCase,
+    private readonly listProductUseCase: ListProductUseCase,
   ) {}
 
   @Post()
@@ -71,7 +74,7 @@ export class ProductController {
   }
 
   @Get()
-  async list(@Query('search') search?: string) {
+  async search(@Query('search') search?: string) {
     if (search) {
       return this.searchProductUseCase.execute(search);
     }
@@ -85,5 +88,16 @@ export class ProductController {
   @Get('category/:category')
   findByCategory(@Param('category') category: string) {
     return this.findProductByCategoryUseCase.execute(category);
+  }
+
+  @Get()
+  list(@Query() query: ListProductsDto) {
+    return this.listProductUseCase.execute({
+      page: query.page ? Number(query.page) : undefined,
+      limit: query.limit ? Number(query.limit) : undefined,
+      category: query.category,
+      minPrice: query.minPrice ? Number(query.minPrice) : undefined,
+      maxPrice: query.maxPrice ? Number(query.maxPrice) : undefined,
+    });
   }
 }

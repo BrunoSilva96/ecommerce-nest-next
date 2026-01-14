@@ -1,7 +1,7 @@
 import { ProductEntity } from '../../entities/product.entity';
-import { ProductRepository } from '../product.repository';
+import { ListProductsFilter, ProductRepository } from '../product.repository';
 import { db } from 'src/database/drizzle';
-import { eq, ilike, or } from 'drizzle-orm';
+import { and, eq, gte, ilike, lte, or, SQL } from 'drizzle-orm';
 import { products } from 'src/database/schemas/products';
 import {
   ConflictException,
@@ -113,6 +113,33 @@ export class DrizzleProductRepository implements ProductRepository {
       .select()
       .from(products)
       .where(eq(products.category, category));
+
+    return rows.map((row) => new ProductEntity(row));
+  }
+
+  async list(filters: ListProductsFilter): Promise<ProductEntity[]> {
+    const { page, limit, category, minPrice, maxPrice } = filters;
+
+    const whereConditions: Array<SQL<unknown>> = [];
+
+    if (category) {
+      whereConditions.push(eq(products.category, category));
+    }
+
+    if (minPrice !== undefined) {
+      whereConditions.push(gte(products.priceCents, minPrice));
+    }
+
+    if (maxPrice !== undefined) {
+      whereConditions.push(lte(products.priceCents, maxPrice));
+    }
+
+    const rows = await db
+      .select()
+      .from(products)
+      .where(whereConditions.length ? and(...whereConditions) : undefined)
+      .limit(limit)
+      .offset((page - 1) * limit);
 
     return rows.map((row) => new ProductEntity(row));
   }

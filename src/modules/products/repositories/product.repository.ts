@@ -1,5 +1,13 @@
 import { ProductEntity } from '../entities/product.entity';
 
+export interface ListProductsFilter {
+  page: number;
+  limit: number;
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
 export abstract class ProductRepository {
   abstract findByName(name: string): Promise<ProductEntity | null>;
 
@@ -29,6 +37,8 @@ export abstract class ProductRepository {
       updatedAt?: Date;
     },
   ): Promise<ProductEntity>;
+
+  abstract list(filters: ListProductsFilter): Promise<ProductEntity[]>;
 
   abstract delete(id: string): Promise<void>;
 
