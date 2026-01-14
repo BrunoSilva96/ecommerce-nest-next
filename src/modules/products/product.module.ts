@@ -8,6 +8,7 @@ import { DeleteProductUseCase } from './use-case/delete-product.usecase';
 import { SearchProductUseCase } from './use-case/search-product.usecase';
 import { FindAllProductsUseCase } from './use-case/find-all-product.usecase';
 import { FindProductByCategoryUseCase } from './use-case/find-products-by-category.usecase';
+import { ListProductUseCase } from './use-case/list-products.usecase.dto';
 
 @Module({
   controllers: [ProductController],
@@ -18,6 +19,7 @@ import { FindProductByCategoryUseCase } from './use-case/find-products-by-catego
     SearchProductUseCase,
     FindAllProductsUseCase,
     FindProductByCategoryUseCase,
+    ListProductUseCase,
     {
       provide: ProductRepository,
       useClass: DrizzleProductRepository,
